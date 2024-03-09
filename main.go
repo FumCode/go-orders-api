@@ -4,16 +4,23 @@ import (
 	"fmt"
 	"net/http"
 
-	
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
+
+	// add chi router
+	router := chi.NewRouter()
+	router.Use(middleware.Logger) // console logger
+
+	router.Get("/hello", basicHandler)
+
 	// init server
 	server := &http.Server{
 		Addr: ":3000",
-		Handler: http.HandlerFunc(basicHandler),
+		Handler: router,
 	}
 	// check for errors
 	err := server.ListenAndServe()
