@@ -1,34 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"net/http"
 
-
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/FumCode/go-orders-api/application"
 )
 
 func main() {
+	app := application.New()
 
-	// add chi router
-	router := chi.NewRouter()
-	router.Use(middleware.Logger) // console logger
-
-	router.Get("/hello", basicHandler)
-
-	// init server
-	server := &http.Server{
-		Addr: ":3000",
-		Handler: router,
-	}
-	// check for errors
-	err := server.ListenAndServe()
+	err := app.Start(context.TODO())
 	if err != nil {
-		fmt.Println("faided", err)
+		fmt.Println("failed to strart app: ", err)
 	}
-}
-// basic handler function
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello Server"))
 }
